@@ -101,6 +101,32 @@ def login():
         print("Incorrect password")
         login()
 
+def accountWithdrawn(username):
+    inputWithdrawAccount = input("what account would you like to withdraw from:\n1.Current Account \n2.Savings Account \nPlease enter 1 or 2\n")
+    inputWithdrawAmount = input("Amount:$")
+    if int(inputWithdrawAccount) == 1:
+        #print(F"Current Balance: ${int(accountCurrentAccount(username))-int(inputWithdrawAmount)}")
+        profiles.update_cell(profileFind(username).row, profileFind(username).col+2, int(accountCurrentAccount(username))-int(inputWithdrawAmount))
+        print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")
+        login()
+    elif int(inputWithdrawAccount) == 2:
+        #print(F"Current Balance: ${int(accountSavingsAccount(username))-int(inputWithdrawAmount)}")
+        profiles.update_cell(profileFind(username).row, profileFind(username).col+3, int(accountSavingsAccount(username))-int(inputWithdrawAmount))
+        print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")
+        login()
+
+def accountDeposit(username):
+    inputDepositAccount = input("what account would you like to deposit to:\n1.Current Account \n2.Savings Account \nPlease enter 1 or 2\n")
+    inputDepositAmount = input("Amount:$")
+    if int(inputDepositAccount) == 1:
+        #print(F"Current Balance: ${int(accountCurrentAccount(username))+int(inputDepositAmount)}")
+        profiles.update_cell(profileFind(username).row, profileFind(username).col+2, int(accountCurrentAccount(username))+int(inputWithdrawAmount))
+        print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")
+        login()
+    elif int(inputDepositAccount) == 2:
+        profiles.update_cell(profileFind(username).row, profileFind(username).col+3, int(accountSavingsAccount(username))+int(inputWithdrawAmount))
+        print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")
+        login()
 
 def profileFind(username):
     cell = SHEET.worksheet('profiles').find(username)
