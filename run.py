@@ -1,5 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
+import numpy as np
+
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -14,7 +16,14 @@ SHEET = GSPREAD_CLIENT.open('pythonATM')
 
 profiles = SHEET.worksheet('profiles')
 
+
+exist_test = SHEET.worksheet('profiles').get_values('A:b')
 exist_username = SHEET.worksheet('profiles').get_values('A:A')
+exist_password = SHEET.worksheet('profiles').get_values('B:B')
+exist_current_account = SHEET.worksheet('profiles').get_values('C:C')
+exist_savings_account = SHEET.worksheet('profiles').get_values('D:D')
+numpyUsername = np.array(exist_username)
+
 data = profiles.get_all_values()
 
 
@@ -23,7 +32,6 @@ def createProfile():
     
     print("Enter Username.")
     print("Your username could not contain special characters")
-    print(exist_username)
     username = input("Username:")
 
     if username in Extract(exist_username):
@@ -31,29 +39,68 @@ def createProfile():
     else:
         print(f"Your username: {username}")
         user_profile.append(username)
-        print(user_profile)
+        
         password = input("Password:")
         user_profile.append(password)
-        print(user_profile)
+      
         current_acc = input("Inital log into Current Account:")
         user_profile.append(int(current_acc))
-        print(user_profile)
+       
         savings_acc = input("Inital log into Savings Account:")
         user_profile.append(int(savings_acc))
-        print(user_profile)
+       
         worksheet_to_update = SHEET.worksheet('profiles')
         worksheet_to_update.append_row(user_profile)
 
+        print("Your account has been created successfully.")
+        print("--Account Summary--")
+        print(F"Username: {username}")
+        print(F"Current Account: ${current_acc}")
+        print(F"Savings Account: ${savings_acc}")
+        nextstep = input("\n1.Login or 2.Exit. \nPlease enter 1 or 2\n")
+        if int(nextstep) == 1:
+            login()
+        elif int(nextstep) == 2:
+            print("Goodbye")
 
-def Extract(lst):
-    return [item[0] for item in lst]
+def accountPassword(username):
+    #numpyPassword = np.array(exist_password)
+    #arr_index = np.where(numpyUsername == username)
+    #password = numpyPassword[arr_index][0]
+    password = profiles.cell(profileFind(username).row, profileFind(username).col+1).value
+    return password
 
-      
+
+
+def login():
+    inputUsername = input("Enter your username:")
+    profileFind(inputUsername)
+    inputPassword = input("Enter your password:")
+    if accountPassword(inputUsername) == inputPassword:
+        print("---Account Summary---")
+        print(F"Current Account: ${accountCurrentAccount(inputUsername)}")
+        print(F"Savings Account: ${accountSavingsAccount(inputUsername)}")
+        nextstep = input("\nWhat would you like to do:1.Withdraw or 2.Deposit or 3.Change Password. \nPlease enter 1, 2 or 3\n")
+        if int(nextstep) == 1:
+            accountWithdrawn(inputUsername)
+        elif int(nextstep) == 2:
+            accountDeposit(inputUsername)
+        elif int(nextstep) == 3:
+            changePassword(inputUsername)
+    else:
+        print("Incorrect password")
+        login()
+
+
+def profileFind(username):
+    cell = SHEET.worksheet('profiles').find(username)
+    return cell
+
 print("Welcome to ATM. please choose an 1 or 2?")
-
-firststep = input("1.Login or 2.Create a profile. please enter 1 or 2\n")
-
+firststep = input("1.Login or 2.Create a profile. \nPlease enter 1 or 2\n")
+#print(F"Current Account: {cell}")
 if int(firststep) == 1:
-    print("wwee")
+    print(F"Current Account: {exist_test}")
+    login()
 elif int(firststep) == 2:
     createProfile()
