@@ -70,7 +70,17 @@ def accountPassword(username):
     password = profiles.cell(profileFind(username).row, profileFind(username).col+1).value
     return password
 
+def accountCurrentAccount(username):
+    numpyCurrentAccount = np.array(exist_current_account)
+    arr_index = np.where(numpyUsername == username)
+    currentAccount = numpyCurrentAccount[arr_index][0]
+    return currentAccount
 
+def accountSavingsAccount(username):
+    numpySavingsAccount = np.array(exist_savings_account)
+    arr_index = np.where(numpyUsername == username)
+    savingsAccount = numpySavingsAccount[arr_index][0]
+    return savingsAccount
 
 def login():
     inputUsername = input("Enter your username:")
