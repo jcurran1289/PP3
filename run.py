@@ -128,6 +128,11 @@ def accountDeposit(username):
         print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")
         login()
 
+def changePassword(username):
+    updatedPassword = input("Please enter new password:")
+    profiles.update_cell(profileFind(username).row, profileFind(username).col+1, updatedPassword)
+    login()
+
 def profileFind(username):
     cell = SHEET.worksheet('profiles').find(username)
     return cell
