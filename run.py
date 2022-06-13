@@ -41,46 +41,51 @@ def profileFind(username):
 
 
 def createProfile():
+    values_list = SHEET.worksheet('profiles').col_values(1)
     user_profile = []
 
     print("Enter Username.")
     print("Your username could not contain special characters")
     username = input("Username:")
-    print(F"Current Balance: ${exist_username}")
+    #print(F"Current Balance: ${exist_username}")
 
-    if username in np.extract(exist_username):
+    while username in values_list:
         print('Username exists')
-    else:
-        print(f"Your username: {username}")
-        user_profile.append(username)
+        print("Enter Username.")
+        print("Your username could not contain special characters")
+        username = input("Username:")
+        
+    
+    print(f"Your username: {username}")
+    user_profile.append(username)
 
-        password = input("Password:")
-        user_profile.append(password)
+    password = input("Password:")
+    user_profile.append(password)
 
-        while True: 
-            current_acc = input("Inital log into Current Account:")
-            if validate_data(current_acc):
-                user_profile.append(int(current_acc))
-                break
-        while True: 
-            savings_acc = input("Inital log into Savings Account:")
-            if validate_data(savings_acc):   
-                user_profile.append(int(savings_acc))
-                break
+    while True: 
+        current_acc = input("Inital log into Current Account:")
+        if validate_data(current_acc):
+            user_profile.append(int(current_acc))
+            break
+    while True: 
+        savings_acc = input("Inital log into Savings Account:")
+        if validate_data(savings_acc):   
+            user_profile.append(int(savings_acc))
+            break
 
-        worksheet_to_update = SHEET.worksheet('profiles')
-        worksheet_to_update.append_row(user_profile)
+    worksheet_to_update = SHEET.worksheet('profiles')
+    worksheet_to_update.append_row(user_profile)
 
-        print("Your account has been created successfully.")
-        print("--Account Summary--")
-        print(F"Username: {username}")
-        print(F"Current Account: ${current_acc}")
-        print(F"Savings Account: ${savings_acc}")
-        nextstep = input("\n1.Login or 2.Exit. \nPlease enter 1 or 2\n")
-        if int(nextstep) == 1:
-            login()
-        elif int(nextstep) == 2:
-            print("Goodbye")
+    print("Your account has been created successfully.")
+    print("--Account Summary--")
+    print(F"Username: {username}")
+    print(F"Current Account: ${current_acc}")
+    print(F"Savings Account: ${savings_acc}")
+    nextstep = input("\n1.Login or 2.Exit. \nPlease enter 1 or 2\n")
+    if int(nextstep) == 1:
+        login()
+    elif int(nextstep) == 2:
+        print("Goodbye")
 
 
 def accountPassword(username):
@@ -207,7 +212,7 @@ def validate_data(values):
     try:
         [int(value) for value in values]
     except ValueError as e:
-        print(f"Invalid amount: please try again!\n")
+        print(f"Invalid amount: please try again!")
         return False
     
     return True
