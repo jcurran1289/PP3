@@ -46,29 +46,29 @@ def createProfile():
 
     print("Enter Username.")
     print("Your username could not contain special characters")
-    username = input("Username:")
+    username = input("Username:\n")
     #print(F"Current Balance: ${exist_username}")
 
     while username in values_list:
         print('Username exists')
         print("Enter Username.")
         print("Your username could not contain special characters")
-        username = input("Username:")
+        username = input("Username:\n")
         
     
     print(f"Your username: {username}")
     user_profile.append(username)
 
-    password = input("Password:")
+    password = input("Password:\n")
     user_profile.append(password)
 
     while True: 
-        current_acc = input("Inital log into Current Account:")
+        current_acc = input("Inital log into Current Account:\n")
         if validate_data(current_acc):
             user_profile.append(int(current_acc))
             break
     while True: 
-        savings_acc = input("Inital log into Savings Account:")
+        savings_acc = input("Inital log into Savings Account:\n")
         if validate_data(savings_acc):   
             user_profile.append(int(savings_acc))
             break
@@ -116,7 +116,7 @@ def accountSavingsAccount(username):
 
 
 def login():
-    inputUsername = input("Enter your username:")
+    inputUsername = input("Enter your username:\n")
     profileFind(inputUsername)
     Current_user = currentuser(SHEET.worksheet('profiles').find(inputUsername),
                             accountPassword(inputUsername),
@@ -124,11 +124,11 @@ def login():
                             accountSavingsAccount(inputUsername))
     print(Current_user.current_account)
 
-    inputPassword = input("Enter your password:")
+    inputPassword = input("Enter your password:\n")
     # if accountPassword(inputUsername) == inputPassword:
     while inputPassword not in (Current_user.password ,"q"):
         print("Incorrect password")
-        inputPassword = input("Enter your password:")
+        inputPassword = input("Enter your password:\n")
     if inputPassword == Current_user.password:
         print("---Account Summary---")
         print(F"Current Account: ${Current_user.current_account}")
@@ -154,7 +154,7 @@ def accountWithdrawn(username):
     if inputWithdrawAccount == '1':
         while True: 
             print(F"Current Balance: ${int(accountCurrentAccount(username))}")
-            inputWithdrawAmountCurrent = input("How much would you like to withdraw:$")
+            inputWithdrawAmountCurrent = input("How much would you like to withdraw:$\n")
             if validate_data(inputWithdrawAmountCurrent):
                 profiles.update_cell(profileFind(username).row, profileFind(username).col+2, int(accountCurrentAccount(username))-int(inputWithdrawAmountCurrent))
                 print(F"New Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")
@@ -163,7 +163,7 @@ def accountWithdrawn(username):
     elif inputWithdrawAccount == '2':
         while True: 
             print(F"Current Balance: ${int(accountSavingsAccount(username))}")
-            inputWithdrawAmountSavings = input("How much would you like to withdraw:$")
+            inputWithdrawAmountSavings = input("How much would you like to withdraw:$\n")
             if validate_data(inputWithdrawAmountSavings):
                 profiles.update_cell(profileFind(username).row, profileFind(username).col+3, int(accountSavingsAccount(username))-int(inputWithdrawAmountSavings))
                 print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")
@@ -180,7 +180,7 @@ def accountDeposit(username):
     if inputDepositAccount == '1':
         while True:    
             print(F"Current Balance: ${int(accountCurrentAccount(username))}")
-            inputDepositAmountCurrent = input("How much would you like to deposit:$")
+            inputDepositAmountCurrent = input("How much would you like to deposit:$\n")
             if validate_data(inputDepositAmountCurrent):
                 profiles.update_cell(profileFind(username).row, profileFind(
                     username).col+2, int(accountCurrentAccount(username))+int(inputDepositAmountCurrent))
@@ -191,7 +191,7 @@ def accountDeposit(username):
     elif inputDepositAccount == '2':
         while True: 
             print(F"Current Balance: ${int(accountCurrentAccount(username))}")
-            inputDepositAmountSaving = input("How much would you like to deposit:$")
+            inputDepositAmountSaving = input("How much would you like to deposit:$\n")
             if validate_data(inputDepositAmountSaving):
                 profiles.update_cell(profileFind(username).row, profileFind(username).col+3, int(accountSavingsAccount(username))+int(inputDepositAmountSaving))  # noqa
                 print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")
@@ -202,7 +202,7 @@ def accountDeposit(username):
 
 
 def changePassword(username):
-    updatedPassword = input("Please enter new password:")
+    updatedPassword = input("Please enter new password:\n")
     profiles.update_cell(profileFind(username).row,
                          profileFind(username).col+1, updatedPassword)
     login()
