@@ -47,29 +47,26 @@ def createProfile():
     print("Enter Username.")
     print("Your username could not contain special characters")
     username = input("Username:\n")
-    #print(F"Current Balance: ${exist_username}")
 
     while username in values_list:
         print('Username exists')
         print("Enter Username.")
         print("Your username could not contain special characters")
         username = input("Username:\n")
-        
-    
     print(f"Your username: {username}")
     user_profile.append(username)
 
     password = input("Password:\n")
     user_profile.append(password)
 
-    while True: 
+    while True:
         current_acc = input("Inital log into Current Account:\n")
         if validate_data(current_acc):
             user_profile.append(int(current_acc))
             break
-    while True: 
+    while True:
         savings_acc = input("Inital log into Savings Account:\n")
-        if validate_data(savings_acc):   
+        if validate_data(savings_acc):
             user_profile.append(int(savings_acc))
             break
 
@@ -89,29 +86,22 @@ def createProfile():
 
 
 def accountPassword(username):
-    # numpyPassword = np.array(exist_password)
-    #arr_index = np.where(numpyUsername == username)
-    #password = numpyPassword[arr_index][0]
+
     password = profiles.cell(profileFind(username).row,
                              profileFind(username).col+1).value
     return password
 
 
 def accountCurrentAccount(username):
-    # numpyCurrentAccount = np.array(exist_current_account)
-    # arr_index = np.where(numpyUsername == username)
-    # currentAccount = numpyCurrentAccount[arr_index][0]
-    #     # savingsAccount = numpySavingsAccount[arr_index][0]
+
     currentAccount = profiles.cell(profileFind(username).row,
                                    profileFind(username).col+2).value
     return currentAccount
 
 
 def accountSavingsAccount(username):
-    # numpySavingsAccount = np.array(exist_savings_account)
-    # arr_index = np.where(numpyUsername == username)
-    # savingsAccount = numpySavingsAccount[arr_index][0]
-    savingsAccount = profiles.cell(profileFind(username).row,profileFind(username).col+3).value
+
+    savingsAccount = profiles.cell(profileFind(username).row, profileFind(username).col+3).value  # noqa
     return savingsAccount
 
 
@@ -121,12 +111,12 @@ def login():
     Current_user = currentuser(SHEET.worksheet('profiles').find(inputUsername),
                             accountPassword(inputUsername),
                             accountCurrentAccount(inputUsername),
-                            accountSavingsAccount(inputUsername))
+                            accountSavingsAccount(inputUsername))   # noqa
     print(Current_user.current_account)
 
     inputPassword = input("Enter your password:\n")
     # if accountPassword(inputUsername) == inputPassword:
-    while inputPassword not in (Current_user.password ,"q"):
+    while inputPassword not in (Current_user.password, "q"):
         print("Incorrect password")
         inputPassword = input("Enter your password:\n")
     if inputPassword == Current_user.password:
@@ -135,8 +125,10 @@ def login():
         print(F"Savings Account: ${Current_user.savings_account}")
         mainMenu(inputUsername)
 
+
 def mainMenu(username):
-    nextstep = input("\nWhat would you like to do:\n1.Withdraw \n2.Deposit \n3.Change Password \nQ.Quit \nPlease enter 1, 2, 3 or Q\n")
+
+    nextstep = input("\nWhat would you like to do:\n1.Withdraw \n2.Deposit \n3.Change Password \nQ.Quit \nPlease enter 1, 2, 3 or Q\n")  # noqa
     if int(nextstep) == 1:
         accountWithdrawn(username)
     elif int(nextstep) == 2:
@@ -144,57 +136,61 @@ def mainMenu(username):
     elif int(nextstep) == 3:
         changePassword(username)
     elif nextstep.lower() == 'q':
-        print("Goodbye") 
+        print("Goodbye")
+
 
 def accountWithdrawn(username):
-    inputWithdrawAccount = str(input("what account would you like to withdraw from:\n1.Current Account \n2.Savings Account \nQ.Quit  \nPlease enter 1, 2, or Q\n").strip())
+
+    inputWithdrawAccount = str(input("what account would you like to withdraw from:\n1.Current Account \n2.Savings Account \nQ.Quit  \nPlease enter 1, 2, or Q\n").strip())  # noqa
     while inputWithdrawAccount.lower() not in ("1", "2", "q"):
         print("Please select 1, 2 or Q to quit")
         inputWithdrawAccount = str(input("Enter your answer here \n").strip())
     if inputWithdrawAccount == '1':
-        while True: 
+        while True:
             print(F"Current Balance: ${int(accountCurrentAccount(username))}")
-            inputWithdrawAmountCurrent = input("How much would you like to withdraw:$\n")
+            inputWithdrawAmountCurrent = input("How much would you like to withdraw:$\n")  # noqa
             if validate_data(inputWithdrawAmountCurrent):
-                profiles.update_cell(profileFind(username).row, profileFind(username).col+2, int(accountCurrentAccount(username))-int(inputWithdrawAmountCurrent))
-                print(F"New Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")
+                profiles.update_cell(profileFind(username).row, profileFind(username).col+2, int(accountCurrentAccount(username))-int(inputWithdrawAmountCurrent))  # noqa
+                print(F"New Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")  # noqa
                 mainMenu(username)
                 break
     elif inputWithdrawAccount == '2':
-        while True: 
+        while True:
             print(F"Current Balance: ${int(accountSavingsAccount(username))}")
-            inputWithdrawAmountSavings = input("How much would you like to withdraw:$\n")
+            inputWithdrawAmountSavings = input("How much would you like to withdraw:$\n")  # noqa
             if validate_data(inputWithdrawAmountSavings):
-                profiles.update_cell(profileFind(username).row, profileFind(username).col+3, int(accountSavingsAccount(username))-int(inputWithdrawAmountSavings))
-                print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")
+                profiles.update_cell(profileFind(username).row, profileFind(username).col+3, int(accountSavingsAccount(username))-int(inputWithdrawAmountSavings))  # noqa
+                print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")  # noqa
                 mainMenu(username)
                 break
     elif inputWithdrawAccount.lower() == 'q':
         print("Goodbye")
 
+
 def accountDeposit(username):
-    inputDepositAccount = str(input("what account would you like to deposit to:\n1.Current Account \n2.Savings Account \nPlease enter 1, 2, or Q\n"))
+
+    inputDepositAccount = str(input("what account would you like to deposit to:\n1.Current Account \n2.Savings Account \nPlease enter 1, 2, or Q\n"))  # noqa
     while inputDepositAccount.lower() not in ("1", "2", "q"):
         print("Please select 1, 2 or Q to quit")
         inputDepositAccount = str(input("Enter your answer here \n").strip())
     if inputDepositAccount == '1':
-        while True:    
+        while True:
             print(F"Current Balance: ${int(accountCurrentAccount(username))}")
-            inputDepositAmountCurrent = input("How much would you like to deposit:$\n")
+            inputDepositAmountCurrent = input("How much would you like to deposit:$\n")  # noqa
             if validate_data(inputDepositAmountCurrent):
                 profiles.update_cell(profileFind(username).row, profileFind(
-                    username).col+2, int(accountCurrentAccount(username))+int(inputDepositAmountCurrent))
+                    username).col+2, int(accountCurrentAccount(username))+int(inputDepositAmountCurrent))  # noqa
                 print(
-                    F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")
+                    F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")  # noqa
                 mainMenu(username)
                 break
     elif inputDepositAccount == '2':
-        while True: 
+        while True:
             print(F"Current Balance: ${int(accountCurrentAccount(username))}")
-            inputDepositAmountSaving = input("How much would you like to deposit:$\n")
+            inputDepositAmountSaving = input("How much would you like to deposit:$\n")  # noqa
             if validate_data(inputDepositAmountSaving):
                 profiles.update_cell(profileFind(username).row, profileFind(username).col+3, int(accountSavingsAccount(username))+int(inputDepositAmountSaving))  # noqa
-                print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")
+                print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")  # noqa
                 mainMenu(username)
                 break
     elif inputDepositAccount.lower() == 'q':
@@ -207,6 +203,7 @@ def changePassword(username):
                          profileFind(username).col+1, updatedPassword)
     login()
 
+
 def validate_data(values):
 
     try:
@@ -214,19 +211,21 @@ def validate_data(values):
     except ValueError as e:
         print(f"Invalid amount: please try again!")
         return False
-    
     return True
 
 
-print("Welcome to ATM. please choose an 1 or 2?")
-answer = str(input("1.Login or 2.Create a profile. \nPlease enter 1 or 2\n").strip())
-while answer.lower() not in ("1", "2", "q"):
-    print("Please select 1, 2 or Q to quit")
-    answer = str(input("enter your answer here \n").strip())
-if answer == '1':
-    #print(F"Current Account: {exist_test}")
-    login()
-elif answer == '2':
-    createProfile()
-elif answer.lower() == 'q':
-    print("Goodbye")
+def main():
+    answer = str(input("1.Login or 2.Create a profile. \nPlease enter 1 or 2\n").strip())  # noqa
+    while answer.lower() not in ("1", "2", "q"):
+        print("Please select 1, 2 or Q to quit")
+        answer = str(input("enter your answer here \n").strip())
+    if answer == '1':
+        login()
+    elif answer == '2':
+        createProfile()
+    elif answer.lower() == 'q':
+        print("Goodbye")
+
+
+print("Welcome to ATM")
+main()
