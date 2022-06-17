@@ -45,7 +45,6 @@ def createProfile():
     user_profile = []
 
     print("Enter Username.")
-    print("Your username could not contain special characters")
     username = input("Username:\n")
 
     while username in values_list:
@@ -56,8 +55,11 @@ def createProfile():
     print(f"Your username: {username}")
     user_profile.append(username)
 
-    password = input("Password:\n")
-    user_profile.append(password)
+    while True:
+        password = input("Password:\n")
+        if validate_password(password):
+            user_profile.append(password)
+            break
 
     while True:
         current_acc = input("Inital log into Current Account:\n")
@@ -74,7 +76,7 @@ def createProfile():
     worksheet_to_update.append_row(user_profile)
 
     print("Your account has been created successfully.")
-    print("--Account Summary--")
+    print("\n --Account Summary--")
     print(F"Username: {username}")
     print(F"Current Account: ${current_acc}")
     print(F"Savings Account: ${savings_acc}")
@@ -112,7 +114,6 @@ def login():
                             accountPassword(inputUsername),
                             accountCurrentAccount(inputUsername),
                             accountSavingsAccount(inputUsername))   # noqa
-    print(Current_user.current_account)
 
     inputPassword = input("Enter your password:\n")
     # if accountPassword(inputUsername) == inputPassword:
@@ -120,7 +121,8 @@ def login():
         print("Incorrect password")
         inputPassword = input("Enter your password:\n")
     if inputPassword == Current_user.password:
-        print("---Account Summary---")
+        print("\n You have logged in successfully!")
+        print("\n ---Account Summary---")
         print(F"Current Account: ${Current_user.current_account}")
         print(F"Savings Account: ${Current_user.savings_account}")
         mainMenu(inputUsername)
@@ -145,20 +147,21 @@ def accountWithdrawn(username):
     while inputWithdrawAccount.lower() not in ("1", "2", "q"):
         print("Please select 1, 2 or Q to quit")
         inputWithdrawAccount = str(input("Enter your answer here \n").strip())
-    if inputWithdrawAccount == '1':
-        while True:
+    if inputWithdrawAccount =='1':
+        while True and inputWithdrawAmountCurrent != 'Q':
             print(F"Current Balance: ${int(accountCurrentAccount(username))}")
             inputWithdrawAmountCurrent = input("How much would you like to withdraw:$\n")  # noqa
-            if validate_data(inputWithdrawAmountCurrent):
+            if validate_account_balance(inputWithdrawAmountCurrent, accountCurrentAccount):
                 profiles.update_cell(profileFind(username).row, profileFind(username).col+2, int(accountCurrentAccount(username))-int(inputWithdrawAmountCurrent))  # noqa
                 print(F"New Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")  # noqa
                 mainMenu(username)
                 break
+                
     elif inputWithdrawAccount == '2':
         while True:
             print(F"Current Balance: ${int(accountSavingsAccount(username))}")
             inputWithdrawAmountSavings = input("How much would you like to withdraw:$\n")  # noqa
-            if validate_data(inputWithdrawAmountSavings):
+            if validate_account_balance(inputWithdrawAmountSavings, accountSavingsAccount(username)):
                 profiles.update_cell(profileFind(username).row, profileFind(username).col+3, int(accountSavingsAccount(username))-int(inputWithdrawAmountSavings))  # noqa
                 print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")  # noqa
                 mainMenu(username)
@@ -178,10 +181,8 @@ def accountDeposit(username):
             print(F"Current Balance: ${int(accountCurrentAccount(username))}")
             inputDepositAmountCurrent = input("How much would you like to deposit:$\n")  # noqa
             if validate_data(inputDepositAmountCurrent):
-                profiles.update_cell(profileFind(username).row, profileFind(
-                    username).col+2, int(accountCurrentAccount(username))+int(inputDepositAmountCurrent))  # noqa
-                print(
-                    F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")  # noqa
+                profiles.update_cell(profileFind(username).row, profileFind(username).col+2, int(accountCurrentAccount(username))+int(inputDepositAmountCurrent))  # noqa
+                print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")  # noqa
                 mainMenu(username)
                 break
     elif inputDepositAccount == '2':
@@ -198,9 +199,13 @@ def accountDeposit(username):
 
 
 def changePassword(username):
-    updatedPassword = input("Please enter new password:\n")
-    profiles.update_cell(profileFind(username).row,
+    while True:
+        updatedPassword = input("Please enter new password:\n")
+        if validate_password(updatedPassword):
+            profiles.update_cell(profileFind(username).row,
                          profileFind(username).col+1, updatedPassword)
+            break
+    print("Password updated")
     login()
 
 
@@ -210,6 +215,33 @@ def validate_data(values):
         [int(value) for value in values]
     except ValueError as e:
         print(f"Invalid amount: please try again!")
+        return False
+    return True
+
+
+def validate_account_balance(values,account_balance):
+
+    try:
+        [int(value) for value in values]
+        if int(account_balance)-int(values) < 0:
+            raise ValueError(
+                f"Insufficient funs: Please try again"
+            )
+    except ValueError as e:
+        print(f"{e}: please try again!")
+        return False
+    return True
+
+
+def validate_password(pw):
+
+    try:
+        if len(pw) != 6:
+            raise ValueError(
+                f"Exactly 6 values required, you provided {len(pw)}"
+            )
+    except ValueError as e:
+        print(f"{e}: please try again!")
         return False
     return True
 

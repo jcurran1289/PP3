@@ -2,9 +2,9 @@
 # Python ATM
 Python ATM  is a Python terminal system, which runs in the Code Institute mock terminal on Heroku.
 
-Users have the ability to create a bank account in the ATM,update their, withdraw and deposit money and the accounts being updated in real time.
+Users have the ability to create a bank account in the ATM, update their account details, withdraw and deposit money and the accounts being updated in real time.
 ## How to use
-The ATM has simply controls and interface. The user will be promted to enter a number depending on what they would like to do or Q to quit the system.
+The ATM has simply controls and interface. The user will be promted to enter a number depending on what they action they would like to carry. They can enter Q at anytime to quit the system.
 
 ## Features
 ### Exisiting Features
@@ -13,21 +13,28 @@ The ATM has simply controls and interface. The user will be promted to enter a n
 - Real Time account updates
 - Account setup
 - Input validation and error checking
+- Balance checking. Account is not able to go into negative digits
 - Data for user profiles is maintained in an class instance
 
 ### Future Features
 - Allow users to see past transactions
 
 ## Data Model
-I used the currentuser class as my model.   
+I used the currentuser class as my model. The class currentuser stores the current user's password, the current balance of their current account and the current balance of their savings account
 
 
 ## Testing
 I have manually tested this project by doing the following:
 - Passed the code through a PEP8 linter and confirmed there are no problems
-- Given invalid inputs: strings when numbers are expected, out of range values and invalid passwords
+- Given invalid inputs: strings when numbers are expected, negative values, non-integers, withdraw more than there is in the account, usernames that are already choosen other users and invalid passwords
 
 ### Bugs
+## Solved Bugs
+- When i entered a string when withdrawing or depositing money, the program would crash. i fixed this by adding data validation function to the input.
+- When the program asks to choose one of the options on the screen and the user enters an option not listed, the program would crash. I fixed this by adding a while loop to to only accept the options displayed
+
+https://github.com/jcurran1289/PP3-atm/issues/1#issue-1263900795
+
 ### Validator Testing
 - PEP8
 -- No errors were returned  from PEP8online.com
@@ -41,3 +48,5 @@ The steps for deployment are as follows:
 - Link the Heroku app to the repository
 - Click on Deploy
 ## Credits
+- Code institute for deployment terminal
+- Code institute love-sandwichs project for the data validation
