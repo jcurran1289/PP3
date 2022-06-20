@@ -36,7 +36,17 @@ class currentuser:
         self.savings_account = savings_account
 
     def checkPassword(self):
-
+        inputPassword = input("Enter your password:\n")
+        while inputPassword != self.password and inputPassword.strip().lower() != "q":
+            print("Incorrect password")
+            inputPassword = input("Enter your password or Q to quit:\n")
+        if inputPassword == self.password:
+            print("\n You have logged in successfully!")
+            print("\n ---Account Summary---")
+            print(F"Current Account: ${self.current_account}")
+            print(F"Savings Account: ${self.savings_account}")
+        elif inputPassword.strip().lower() == 'q':
+            main()
 
 
 def profileFind(username):
@@ -49,29 +59,48 @@ def createProfile():
     user_profile = []
 
     print("Enter Username.")
-    username = input("Username:\n").strip().lower()
+    username = input("Username or Q to quit:\n").lower()
+    if username.lower() == 'q':
+        main()
+
+    while len(username) < 2:
+        print("Username must be at least 2 characters")
+        username = input("Please enter username or Q to quit:\n")
+        if username.lower() == 'q':
+            main()
+            break
 
     while username in values_list:
         print('Username exists')
-        print("Enter Username.")
-        print("Your username could not contain special characters")
-        username = input("Username:\n")
+        username = input("Please enter username or Q to quit:\n")
+        if username.lower() == 'q':
+            main()
+            break
     print(f"Your username: {username}")
     user_profile.append(username)
 
     while True:
-        password = input("Password:\n")
+        password = input("Password or Q to quit:\n")
+        if password.lower() == 'q':
+            main()
+            break
         if validate_password(password):
             user_profile.append(password)
             break
 
     while True:
-        current_acc = input("Inital log into Current Account:\n").strip()
+        current_acc = input("Inital log into Current Account or Q to quit:\n").strip()
+        if current_acc.lower() == 'q':
+            main()
+            break
         if validate_data(current_acc):
             user_profile.append(int(current_acc))
             break
     while True:
-        savings_acc = input("Inital log into Savings Account:\n").strip()
+        savings_acc = input("Inital log into Savings Account or Q to quit:\n").strip()
+        if savings_acc.lower() == 'q':
+            main()
+            break
         if validate_data(savings_acc):
             user_profile.append(int(savings_acc))
             break
@@ -112,7 +141,7 @@ def accountSavingsAccount(username):
 
 
 def login():
-    inputUsername = input("Enter your username:\n").strip().lower()
+    inputUsername = input("Enter your username:\n").lower()
     #pdb.set_trace()
     if profileFind(inputUsername):
         Current_user = currentuser(SHEET.worksheet('profiles').find(inputUsername),
@@ -120,28 +149,18 @@ def login():
                                    accountCurrentAccount(inputUsername),
                                    accountSavingsAccount(inputUsername))   # noqa
 
-
-        inputPassword = input("Enter your password:\n")
-        while inputPassword != self.password and inputPassword.strip().lower() != "q":
-            print("Incorrect password")
-            inputPassword = input("Enter your password or Q to quit:\n")
-        if inputPassword == self.password:
-            print("\n You have logged in successfully!")
-            print("\n ---Account Summary---")
-            print(F"Current Account: ${self.current_account}")
-            print(F"Savings Account: ${self.savings_account}")
-        elif inputPassword.strip().lower() == 'q':
-            main()
+        Current_user.checkPassword()
         mainMenu(inputUsername)
     else:
         print("Username not found")
         main()
 
-def mainMenu(username):
 
+def mainMenu(username):
+    print(F"\nWelcome Back {username}")
     nextstep = input("\nWhat would you like to do:\n1.Withdraw \n2.Deposit \n3.Change Password \nQ.Quit \nPlease enter 1, 2, 3 or Q\n").strip()  # noqa
     while nextstep.lower() not in ("1", "2", "3", "q"):
-        print("Please select 1, 2, 3 or Q to quit")
+        print("Invalid entry.\nPlease select 1, 2, 3 or Q to quit")
         nextstep = str(input("Enter your answer here \n").strip())
     if nextstep == '1':
         accountWithdrawn(username)
@@ -155,14 +174,14 @@ def mainMenu(username):
 
 def accountWithdrawn(username):
 
-    inputWithdrawAccount = str(input("what account would you like to withdraw from:\n1.Current Account \n2.Savings Account \nQ.Quit  \nPlease enter 1, 2, or Q\n").strip())  # noqa
+    inputWithdrawAccount = str(input("What account would you like to withdraw from:\n1.Current Account \n2.Savings Account \nQ.Quit  \nPlease enter 1, 2, or Q\n").strip())  # noqa
     while inputWithdrawAccount.lower() not in ("1", "2", "q"):
-        print("Please select 1, 2 or Q to quit")
+        print("Invalid entry.\nPlease select 1, 2 or Q to quit")
         inputWithdrawAccount = str(input("Enter your answer here \n").strip())
     if inputWithdrawAccount == '1':
         while True:
             print(F"Current Balance: ${int(accountCurrentAccount(username))}")
-            inputWithdrawAmountCurrent = input("How much would you like to withdraw or type Q to quit::$\n").strip()  # noqa
+            inputWithdrawAmountCurrent = input("How much would you like to withdraw or type Q to quit:$\n").strip()  # noqa
             if inputWithdrawAmountCurrent.strip().lower() == 'q':
                 mainMenu(username)
                 break
@@ -175,7 +194,7 @@ def accountWithdrawn(username):
     elif inputWithdrawAccount == '2':
         while True:
             print(F"Current Balance: ${int(accountSavingsAccount(username))}")
-            inputWithdrawAmountSavings = input("How much would you like to withdraw or type Q to quit::$\n").strip()  # noqa
+            inputWithdrawAmountSavings = input("How much would you like to withdraw or type Q to quit:$\n").strip()  # noqa
             if inputWithdrawAmountSavings.strip().lower() == 'q':
                 mainMenu(username)
                 break
@@ -185,14 +204,14 @@ def accountWithdrawn(username):
                 mainMenu(username)
                 break
     elif inputWithdrawAccount.lower() == 'q':
-        print("Goodbye")
+        mainMenu(username)
 
 
 def accountDeposit(username):
 
     inputDepositAccount = str(input("what account would you like to deposit to:\n1.Current Account \n2.Savings Account \nPlease enter 1, 2, or Q\n")).strip()  # noqa
     while inputDepositAccount.lower() not in ("1", "2", "q"):
-        print("Please select 1, 2 or Q to quit")
+        print("Invalid entry.\nPlease select 1, 2 or Q to quit")
         inputDepositAccount = str(input("Enter your answer here \n").strip())
     if inputDepositAccount == '1':
         while True:
@@ -201,30 +220,33 @@ def accountDeposit(username):
             if inputDepositAmountCurrent.strip().lower() == 'q':
                 mainMenu(username)
                 break
-            if validate_account_balance(inputDepositAmountCurrent, accountCurrentAccount(username)):
+            if validate_data(inputDepositAmountCurrent):
                 profiles.update_cell(profileFind(username).row, profileFind(username).col+2, int(accountCurrentAccount(username))+int(inputDepositAmountCurrent))  # noqa
                 print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+2).value}")  # noqa
                 mainMenu(username)
                 break
     elif inputDepositAccount == '2':
         while True:
-            print(F"Current Balance: ${int(accountCurrentAccount(username))}")
+            print(F"Current Balance: ${int(accountSavingsAccount(username))}")
             inputDepositAmountSaving = input("How much would you like to deposit or type Q to quit:$\n").strip()  # noqa
             if inputDepositAmountSaving.strip().lower() == 'q':
                 mainMenu(username)
                 break
-            if validate_account_balance(inputDepositAmountSaving, accountSavingsAccount(username)):
+            if validate_data(inputDepositAmountSaving):
                 profiles.update_cell(profileFind(username).row, profileFind(username).col+3, int(accountSavingsAccount(username))+int(inputDepositAmountSaving))  # noqa
                 print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")  # noqa
                 mainMenu(username)
                 break
     elif inputDepositAccount.lower() == 'q':
-        print("Goodbye")
+        mainMenu(username)
 
 
 def changePassword(username):
     while True:
-        updatedPassword = input("Please enter new password:\n").strip()
+        updatedPassword = input("Please enter new password or Q to quit:\n").strip()
+        if updatedPassword.strip().lower() == 'q':
+                mainMenu(username)
+                break
         if validate_password(updatedPassword):
             profiles.update_cell(profileFind(username).row,
                                  profileFind(username).col+1, updatedPassword)
@@ -235,10 +257,14 @@ def changePassword(username):
 
 def validate_data(values):
 
-    try:
+    try:       
+        if not values.isnumeric():
+            raise ValueError(
+                "Invalid entry"
+            )
         [int(value) for value in values]
     except ValueError:
-        print("Invalid amount: please try again!")
+        print("Invalid entry: please try again!")
         return False
     return True
 
@@ -248,12 +274,12 @@ def validate_account_balance(values, account_balance):
     try:
         if not values.isnumeric():
             raise ValueError(
-                "Expecting an numeric value"
+                "Invalid entry"
             )
         [int(value) for value in values]
         if int(account_balance)-int(values) < 0:
             raise ValueError(
-                "Insufficient funds: Please try again"
+                "Insufficient funds"
             )
     except ValueError as e:
         print(f"{e}: please try again!")
@@ -264,6 +290,8 @@ def validate_account_balance(values, account_balance):
 def validate_password(pw):
 
     try:
+        if pw.lower() == 'q':
+            main()
         if len(pw) != 6:
             raise ValueError(
                 f"Password must be 6 characters long, you provided {len(pw)}"
@@ -277,7 +305,7 @@ def validate_password(pw):
 def main():
     answer = str(input("1.Login or 2.Create a profile. \nPlease enter 1, 2 or Q to quit\n").strip())  # noqa
     while answer.lower() not in ("1", "2", "q"):
-        print("Please select 1, 2 or Q to quit")
+        print("Invalid entry.\nPlease select 1, 2 or Q to quit")
         answer = str(input("enter your answer here \n").strip())
     if answer == '1':
         login()
