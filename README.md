@@ -32,12 +32,14 @@ I have manually tested this project by doing the following:
 ## Solved Bugs
 - When i entered a string when withdrawing or depositing money, the program would crash. i fixed this by adding data validation function to the input.
 - When the program asks to choose one of the options on the screen and the user enters an option not listed, the program would crash. I fixed this by adding a while loop to to only accept the options displayed
-
-https://github.com/jcurran1289/PP3-atm/issues/1#issue-1263900795
+- As i got more comfortable with github, I started to use the issues tab to track bugs: https://github.com/jcurran1289/PP3-atm/issues?q=is%3Aissue+is%3Aclosed
 
 ### Validator Testing
 - PEP8
 -- No errors were returned  from PEP8online.com
+
+### Version Control
+I used github to track my code. Initially was commiting huge chunks and many changes at once. Then started to do smaller changes one at a time
 
 ## Deployment
 This project was deployed using Code Institute's mock terminal for Heroku.
