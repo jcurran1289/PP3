@@ -120,6 +120,7 @@ def login():
                                    accountCurrentAccount(inputUsername),
                                    accountSavingsAccount(inputUsername))   # noqa
 
+
         inputPassword = input("Enter your password:\n")
         while inputPassword != self.password and inputPassword.strip().lower() != "q":
             print("Incorrect password")
@@ -135,7 +136,6 @@ def login():
     else:
         print("Username not found")
         main()
-
 
 def mainMenu(username):
 
