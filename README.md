@@ -40,7 +40,7 @@ I have manually tested this project by doing the following:
 - Passed the code through a PEP8 linter and confirmed there are no problems
 - Given invalid inputs: strings when numbers are expected, negative values, non-integers, withdraw more than there is in the account, usernames that are already choosen other users and invalid passwords
 
-### Bugs
+# Bugs
 ## Solved Bugs
 - When i entered a string when withdrawing or depositing money, the program would crash. i fixed this by adding data validation function to the input.
 - When the program asks to choose one of the options on the screen and the user enters an option not listed, the program would crash. I fixed this by adding a while loop to to only accept the options displayed
@@ -127,6 +127,15 @@ I have manually tested this project by doing the following:
 I used github to track my code. Initially was commiting huge chunks and many changes at once. Then started to do smaller changes one at a time
 
 ## Requirements
+In order to run this project properly you will need the following:
+- Import gspread library
+- Connect the program to your google drive
+- Create a google drive spreahsheet called "profiles" with the following columns:
+  - Username	
+  - password	
+  - current account	
+  - savings account
+
 
 ## Deployment
 This project was deployed using Code Institute's mock terminal for Heroku.

@@ -1,6 +1,5 @@
 import gspread
 from google.oauth2.service_account import Credentials
-import numpy as np
 import pdb
 
 
@@ -23,7 +22,6 @@ exist_username = SHEET.worksheet('profiles').get_values('A:A')
 exist_password = SHEET.worksheet('profiles').get_values('B:B')
 exist_current_account = SHEET.worksheet('profiles').get_values('C:C')
 exist_savings_account = SHEET.worksheet('profiles').get_values('D:D')
-numpyUsername = np.array(exist_username)
 
 data = profiles.get_all_values()
 
