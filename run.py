@@ -246,7 +246,10 @@ def validate_data(values):
 def validate_account_balance(values, account_balance):
 
     try:
-
+        if not values.isnumeric():
+            raise ValueError(
+                "Expecting an numeric value"
+            )
         [int(value) for value in values]
         if int(account_balance)-int(values) < 0:
             raise ValueError(
