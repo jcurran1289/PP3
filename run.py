@@ -70,8 +70,7 @@ def createProfile():
     values_list = SHEET.worksheet('profiles').col_values(1)
     user_profile = []
 
-    print("Enter Username.")
-    username = input("Username or Q to quit:\n").lower()
+    username = input("Enter Username or Q to quit:\n(Username must be at least 2 characters)\n").lower()  # noqa
     if username.lower() == 'q':
         main()
 
@@ -92,7 +91,7 @@ def createProfile():
     user_profile.append(username)
 
     while True:
-        password = input("Password or Q to quit:\n")
+        password = input("Password or Q to quit:\n(Password must be 6 characters long)\n")  # noqa
         if password.lower() == 'q':
             main()
             break
