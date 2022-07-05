@@ -27,6 +27,15 @@ data = profiles.get_all_values()
 
 
 class currentuser:
+  """
+    Class that stores that has two methods. 
+    the first method (__init__) gets the password, current account balance 
+        and savings account balance of the current user
+    the second method (checkPassword) checks to see if the password that 
+        the current user entered matches the password in the google drive sheet
+    """
+
+
     def __init__(self, username, password, current_account, savings_account):
         self.username = username
         self.password = password

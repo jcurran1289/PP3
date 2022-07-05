@@ -24,7 +24,7 @@ The ATM has simply controls and interface. The user will be promted to enter a n
 - Input validation and error checking
 - Balance checking. Account is not able to go into negative digits
 
-![alt text](images/input_auth.PNG)
+![alt text](images/input_ath.PNG)
 
 - Data for user profiles is maintained in an class instance
 
@@ -136,6 +136,7 @@ In order to run this project properly you will need the following:
   - current account	
   - savings account
 
+  ![alt text](images/google_sheet.PNG)
 
 ## Deployment
 This project was deployed using Code Institute's mock terminal for Heroku.
