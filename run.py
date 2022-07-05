@@ -27,14 +27,13 @@ data = profiles.get_all_values()
 
 
 class currentuser:
-  """
+    """
     Class that stores that has two methods. 
     the first method (__init__) gets the password, current account balance 
-        and savings account balance of the current user
+    and savings account balance of the current user
     the second method (checkPassword) checks to see if the password that 
-        the current user entered matches the password in the google drive sheet
+    the current user entered matches the password in the google drive sheet
     """
-
 
     def __init__(self, username, password, current_account, savings_account):
         self.username = username
@@ -57,11 +56,17 @@ class currentuser:
 
 
 def profileFind(username):
+    """
+    gets cell number of the username the user entered in
+    """
     cell = SHEET.worksheet('profiles').find(username)
     return cell
 
 
 def createProfile():
+    """
+    creates new profile for user and adds to the google sheet 
+    """
     values_list = SHEET.worksheet('profiles').col_values(1)
     user_profile = []
 
@@ -128,13 +133,18 @@ def createProfile():
 
 
 def accountPassword(username):
-
+    """
+    gets password for username that was entered 
+    """
     password = profiles.cell(profileFind(username).row,
                              profileFind(username).col+1).value
     return password
 
 
 def accountCurrentAccount(username):
+    """
+    gets current account balance for username that was entered 
+    """
 
     currentAccount = profiles.cell(profileFind(username).row,
                                    profileFind(username).col+2).value
@@ -142,12 +152,17 @@ def accountCurrentAccount(username):
 
 
 def accountSavingsAccount(username):
-
+    """
+    gets saving account balance for username that was entered 
+    """
     savingsAccount = profiles.cell(profileFind(username).row, profileFind(username).col+3).value  # noqa
     return savingsAccount
 
 
 def login():
+    """
+    gets saving account balance for username that was entered 
+    """
     inputUsername = input("Enter your username:\n").lower()
     #pdb.set_trace()
     if profileFind(inputUsername):
