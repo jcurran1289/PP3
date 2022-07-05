@@ -28,10 +28,10 @@ data = profiles.get_all_values()
 
 class currentuser:
     """
-    Class that stores that has two methods. 
-    the first method (__init__) gets the password, current account balance 
+    Class that stores that has two methods.
+    the first method (__init__) gets the password, current account balance
     and savings account balance of the current user
-    the second method (checkPassword) checks to see if the password that 
+    the second method (checkPassword) checks to see if the password that
     the current user entered matches the password in the google drive sheet
     """
 
@@ -43,7 +43,7 @@ class currentuser:
 
     def checkPassword(self):
         inputPassword = input("Enter your password:\n")
-        while inputPassword != self.password and inputPassword.strip().lower() != "q":
+        while inputPassword != self.password and inputPassword.strip().lower() != "q":  # noqa
             print("Incorrect password")
             inputPassword = input("Enter your password or Q to quit:\n")
         if inputPassword == self.password:
@@ -65,7 +65,7 @@ def profileFind(username):
 
 def createProfile():
     """
-    creates new profile for user and adds to the google sheet 
+    creates new profile for user and adds to the google sheet
     """
     values_list = SHEET.worksheet('profiles').col_values(1)
     user_profile = []
@@ -101,7 +101,7 @@ def createProfile():
             break
 
     while True:
-        current_acc = input("Inital log into Current Account or Q to quit:\n").strip()
+        current_acc = input("Inital log into Current Account or Q to quit:\n").strip()  # noqa
         if current_acc.lower() == 'q':
             main()
             break
@@ -109,7 +109,7 @@ def createProfile():
             user_profile.append(int(current_acc))
             break
     while True:
-        savings_acc = input("Inital log into Savings Account or Q to quit:\n").strip()
+        savings_acc = input("Inital log into Savings Account or Q to quit:\n").strip()  # noqa
         if savings_acc.lower() == 'q':
             main()
             break
@@ -134,7 +134,7 @@ def createProfile():
 
 def accountPassword(username):
     """
-    gets password for username that was entered 
+    gets password for username that was entered
     """
     password = profiles.cell(profileFind(username).row,
                              profileFind(username).col+1).value
@@ -143,7 +143,7 @@ def accountPassword(username):
 
 def accountCurrentAccount(username):
     """
-    gets current account balance for username that was entered 
+    gets current account balance for username that was entered
     """
 
     currentAccount = profiles.cell(profileFind(username).row,
@@ -153,7 +153,7 @@ def accountCurrentAccount(username):
 
 def accountSavingsAccount(username):
     """
-    gets saving account balance for username that was entered 
+    gets saving account balance for username that was entered
     """
     savingsAccount = profiles.cell(profileFind(username).row, profileFind(username).col+3).value  # noqa
     return savingsAccount
@@ -161,12 +161,11 @@ def accountSavingsAccount(username):
 
 def login():
     """
-    login screen and class is created  
+    login screen and class is created
     """
     inputUsername = input("Enter your username:\n").lower()
-    #pdb.set_trace()
     if profileFind(inputUsername):
-        Current_user = currentuser(SHEET.worksheet('profiles').find(inputUsername),
+        Current_user = currentuser(SHEET.worksheet('profiles').find(inputUsername),  # noqa
                                    accountPassword(inputUsername),
                                    accountCurrentAccount(inputUsername),
                                    accountSavingsAccount(inputUsername))   # noqa
@@ -199,7 +198,7 @@ def mainMenu(username):
 
 def accountWithdrawn(username):
     """
-    if the user wishes to withdarw. then has to select which account to withdraw from
+    if the user wishes to withdarw. then has to select which account to withdraw from  # noqa
     """
     inputWithdrawAccount = str(input("What account would you like to withdraw from:\n1.Current Account \n2.Savings Account \nQ.Quit  \nPlease enter 1, 2, or Q\n").strip())  # noqa
     while inputWithdrawAccount.lower() not in ("1", "2", "q"):
@@ -225,7 +224,7 @@ def accountWithdrawn(username):
             if inputWithdrawAmountSavings.strip().lower() == 'q':
                 mainMenu(username)
                 break
-            if validate_account_balance(inputWithdrawAmountSavings, accountSavingsAccount(username)):
+            if validate_account_balance(inputWithdrawAmountSavings, accountSavingsAccount(username)):  # noqa
                 profiles.update_cell(profileFind(username).row, profileFind(username).col+3, int(accountSavingsAccount(username))-int(inputWithdrawAmountSavings))  # noqa
                 print(F"Current Balance: ${profiles.cell(profileFind(username).row, profileFind(username).col+3).value}")  # noqa
                 mainMenu(username)
@@ -236,7 +235,7 @@ def accountWithdrawn(username):
 
 def accountDeposit(username):
     """
-    if the user wishes to deposit. then has to select which account to deposit from
+    if the user wishes to deposit. then has to select which account to deposit from  # noqa
     """
     inputDepositAccount = str(input("what account would you like to deposit to:\n1.Current Account \n2.Savings Account \nPlease enter 1, 2, or Q\n")).strip()  # noqa
     while inputDepositAccount.lower() not in ("1", "2", "q"):
@@ -275,7 +274,7 @@ def changePassword(username):
     if the user wishes to change their password
     """
     while True:
-        updatedPassword = input("Please enter new password or Q to quit:\n").strip()
+        updatedPassword = input("Please enter new password or Q to quit:\n").strip()  # noqa
         if updatedPassword.strip().lower() == 'q':
                 mainMenu(username)
                 break
@@ -291,7 +290,7 @@ def validate_data(values):
     """
     checks to see if user input is numeric
     """
-    try:       
+    try:
         if not values.isnumeric():
             raise ValueError(
                 "Invalid entry"
@@ -305,7 +304,7 @@ def validate_data(values):
 
 def validate_account_balance(values, account_balance):
     """
-    checks to see if user input is numeric 
+    checks to see if user input is numeric
     and that the account balance is not negative when the user withdraws
     """
     try:
@@ -343,7 +342,7 @@ def validate_password(pw):
 
 def main():
     """
-    initial screen 
+    initial screen
     """
     answer = str(input("1.Login or 2.Create a profile. \nPlease enter 1, 2 or Q to quit\n").strip())  # noqa
     while answer.lower() not in ("1", "2", "q"):
