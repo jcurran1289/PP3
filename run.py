@@ -161,7 +161,7 @@ def accountSavingsAccount(username):
 
 def login():
     """
-    gets saving account balance for username that was entered 
+    login screen and class is created  
     """
     inputUsername = input("Enter your username:\n").lower()
     #pdb.set_trace()
@@ -179,6 +179,9 @@ def login():
 
 
 def mainMenu(username):
+    """
+    main menu screen when the user successfully login
+    """
     print(F"\nWelcome Back {username}")
     nextstep = input("\nWhat would you like to do:\n1.Withdraw \n2.Deposit \n3.Change Password \nQ.Quit \nPlease enter 1, 2, 3 or Q\n").strip()  # noqa
     while nextstep.lower() not in ("1", "2", "3", "q"):
@@ -195,7 +198,9 @@ def mainMenu(username):
 
 
 def accountWithdrawn(username):
-
+    """
+    if the user wishes to withdarw. then has to select which account to withdraw from
+    """
     inputWithdrawAccount = str(input("What account would you like to withdraw from:\n1.Current Account \n2.Savings Account \nQ.Quit  \nPlease enter 1, 2, or Q\n").strip())  # noqa
     while inputWithdrawAccount.lower() not in ("1", "2", "q"):
         print("Invalid entry.\nPlease select 1, 2 or Q to quit")
@@ -230,7 +235,9 @@ def accountWithdrawn(username):
 
 
 def accountDeposit(username):
-
+    """
+    if the user wishes to deposit. then has to select which account to deposit from
+    """
     inputDepositAccount = str(input("what account would you like to deposit to:\n1.Current Account \n2.Savings Account \nPlease enter 1, 2, or Q\n")).strip()  # noqa
     while inputDepositAccount.lower() not in ("1", "2", "q"):
         print("Invalid entry.\nPlease select 1, 2 or Q to quit")
@@ -264,6 +271,9 @@ def accountDeposit(username):
 
 
 def changePassword(username):
+    """
+    if the user wishes to change their password
+    """
     while True:
         updatedPassword = input("Please enter new password or Q to quit:\n").strip()
         if updatedPassword.strip().lower() == 'q':
@@ -278,7 +288,9 @@ def changePassword(username):
 
 
 def validate_data(values):
-
+    """
+    checks to see if user input is numeric
+    """
     try:       
         if not values.isnumeric():
             raise ValueError(
@@ -292,7 +304,10 @@ def validate_data(values):
 
 
 def validate_account_balance(values, account_balance):
-
+    """
+    checks to see if user input is numeric 
+    and that the account balance is not negative when the user withdraws
+    """
     try:
         if not values.isnumeric():
             raise ValueError(
@@ -310,7 +325,9 @@ def validate_account_balance(values, account_balance):
 
 
 def validate_password(pw):
-
+    """
+    checks to see if user password is 6 characters long
+    """
     try:
         if pw.lower() == 'q':
             main()
@@ -325,6 +342,9 @@ def validate_password(pw):
 
 
 def main():
+    """
+    initial screen 
+    """
     answer = str(input("1.Login or 2.Create a profile. \nPlease enter 1, 2 or Q to quit\n").strip())  # noqa
     while answer.lower() not in ("1", "2", "q"):
         print("Invalid entry.\nPlease select 1, 2 or Q to quit")
