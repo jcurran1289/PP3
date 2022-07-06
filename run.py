@@ -181,7 +181,7 @@ def validate_password(pw):
 class Bank:
     """
     the main menu of the atm when the user login successfuly
-    the user can change their password, withdraw or deposit to/from their account
+    the user can change their password, withdraw or deposit to/from their account  # noqa
     """
     def __init__(self):
         self.username = None
@@ -200,8 +200,8 @@ class Bank:
     def account_balance(self):
         print("Getting Account Blance")
         print("\n --- Account Summary ---")
-        print(f"Current Account: ${self.get_current_balance(account_type='1')}")
-        print(f"Savings Account: ${self.get_current_balance(account_type='2')}")
+        print(f"Current Account: ${self.get_current_balance(account_type='1')}")  # noqa
+        print(f"Savings Account: ${self.get_current_balance(account_type='2')}")  # noqa
 
     def main_menu(self):
         print("Welcome to the Main Menu")
@@ -229,7 +229,7 @@ class Bank:
         if selected_account == '1' or selected_account == '2':
             while True:
                 # Print the current Balance
-                current_balance = self.get_current_balance(account_type=selected_account)
+                current_balance = self.get_current_balance(account_type=selected_account)  # noqa
                 print(f"Current Balance: ${int(current_balance)}")
 
                 deposit_amount = input("How much would you like to deposit or type Q to quit:$\n").strip()  # noqa
@@ -239,7 +239,6 @@ class Bank:
 
                 if validate_data(deposit_amount):
                     cell = profiles.find(self.username)
-                    
                     row = cell.row
                     col = cell.col+2 if selected_account == '1' else cell.col+3
                     current_amount = profiles.cell(row, col).value
@@ -263,7 +262,7 @@ class Bank:
         if selected_account == '1' or selected_account == '2':
             while True:
                 # Print the current Balance
-                current_balance = self.get_current_balance(account_type=selected_account)
+                current_balance = self.get_current_balance(account_type=selected_account)  # noqa
                 print(f"Current Balance: ${int(current_balance)}")
 
                 withdraw_amount = input("How much would you like to withdraw or type Q to quit:$\n").strip()  # noqa
@@ -341,13 +340,11 @@ def main():
             while input_password != password and input_password.strip().lower() != "q":  # noqa
                 print("Incorrect password")
                 input_password = input("Enter your password or Q to quit:\n")
-            
             if input_password == password:
                 my_bank.login(username, password)
         else:
             print("Username not found")
             main()
-            
     elif answer == '2':
         createProfile()
     elif answer.lower() == 'q':
@@ -365,7 +362,7 @@ def check_user(input_username):
         current_account = profiles.cell(cell.row, cell.col+2).value
         savings_account = profiles.cell(cell.row, cell.col+3).value  # noqa
 
-        return {"data": {"username": username, "password": password, "current_account": current_account, "savings_account": savings_account}}
+        return {"data": {"username": username, "password": password, "current_account": current_account, "savings_account": savings_account}}  # noqa
     else:
         return {"success": False}
 
